@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 
+
+//230219
+// 리액트 한글 강의
+// https://react.vlpt.us/basic/08-manage-input.html
+
+
 const Home2=()=> {
   const [inputs, setInputs] = useState({
     name: '',
