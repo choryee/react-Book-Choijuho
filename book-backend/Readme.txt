@@ -1,6 +1,13 @@
 2302012
 26강부터 복습중
 
+새로운 스프링부트 프로젝트 생성
+ : https://leeys.tistory.com/12
+
+Spring - 실무에서 사용하는 React + SpringBoot 프로젝트 만들기 with Gradle
+https://7942yongdae.tistory.com/136
+
+
 메이븐없이  구동은 src/main/java해서 보이는
 BookApplication에서 화살표로 하면, 구동됨
 
