@@ -1,11 +1,19 @@
 2302012
 26강부터 복습중
 
+<<<<<<< HEAD
 환경======
 스프링부트,
 JPA,
 yml,
 H2
+=======
+새로운 스프링부트 프로젝트 생성
+ : https://leeys.tistory.com/12
+
+Spring - 실무에서 사용하는 React + SpringBoot 프로젝트 만들기 with Gradle
+https://7942yongdae.tistory.com/136
+>>>>>>> 2720febc05d7d7c784e906be1f87ce9c11fcc4bd
 
 
 메이븐없이  구동은 src/main/java해서 보이는
