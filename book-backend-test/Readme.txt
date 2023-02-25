@@ -13,7 +13,7 @@ frontend는 book-frontend 또는 book-frontend-test11 로 해야
 리액트 한글 강의
 https://react.vlpt.us/basic/08-manage-input.html
 
-H2 db보기
+H2 db보기 (서버 구동후)
 http://localhost:8080/h2-console
 url: jdbc:h2:mem:booktestdb
 

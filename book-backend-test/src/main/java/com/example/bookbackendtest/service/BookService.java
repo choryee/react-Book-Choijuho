@@ -28,6 +28,18 @@ public class BookService {
                 .orElseThrow(()->new IllegalArgumentException(" 아이디를 확인하세요!!"));
     }
 
+//    @Transactional(readOnly = true)
+//    public Book selectOne(Long id) {
+//        return bookRepository.findById(id)
+//             .orElseThrow(new Supplier<IllegalArgumentException>() {
+//
+//                 @Override
+//                    public IllegalArgumentException get() {
+//                        return new IllegalArgumentException("아이디를 확인하세요!!");
+//                    }
+//                });
+//    }
+
 
         @Transactional(readOnly = true)
         public List<Book> selectAll(){

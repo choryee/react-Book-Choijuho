@@ -27,16 +27,26 @@ public class BookController {
     @CrossOrigin
     @PostMapping("/book")
     public ResponseEntity<?> save22(@RequestBody Book book){
+        System.out.println("book.getAuthor()===>>"+book.getAuthor());
 
         return new ResponseEntity<>(bookService.save(book), HttpStatus.OK);
     }
 
     @CrossOrigin
     @GetMapping("/book/{id}")
-    public ResponseEntity<?> selectOne22(@PathVariable Long id, @RequestBody Book book){
-        Book book22=bookService.selectOne(id);
-        return new ResponseEntity<>(book22, HttpStatus.OK);
+    public ResponseEntity<?> selectOne22(@PathVariable Long id){
+      //  Book book22=bookService.selectOne(id);
+        System.out.println("bookService.selectOne(id)===>>>"+bookService.selectOne(id) );
+        return new ResponseEntity<>(bookService.selectOne(id), HttpStatus.OK);
     }
+
+//    @CrossOrigin
+//    @GetMapping("/book/{id}")
+//    public ResponseEntity<?> findById(@PathVariable Long id){
+//        System.out.println("Id: "+id);
+//        return new ResponseEntity<>(bookService.한건가져오기(id), HttpStatus.OK);
+//    }
+
 
     @CrossOrigin
     @PutMapping("/book/{id}")
@@ -48,8 +58,7 @@ public class BookController {
     @CrossOrigin
     @DeleteMapping("/book/{id}")
     public ResponseEntity<?> delete22(@PathVariable Long id){
-        return new ResponseEntity<>(bookService.delete(id), HttpStatus.OK
-        );
+        return new ResponseEntity<>(bookService.delete(id), HttpStatus.OK );
     }
 
 }

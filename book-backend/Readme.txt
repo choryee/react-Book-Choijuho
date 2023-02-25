@@ -11,6 +11,9 @@ H2
 새로운 스프링부트 프로젝트 생성
  : https://leeys.tistory.com/12
 
+ intellij 스프링부트 gradle 프로젝트 생성
+ https://imksh.com/98
+
 Spring - 실무에서 사용하는 React + SpringBoot 프로젝트 만들기 with Gradle
 https://7942yongdae.tistory.com/136
 
