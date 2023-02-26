@@ -21,6 +21,7 @@ public class BookController {
     @GetMapping("/book")
     public ResponseEntity<?> findAll22(){
         List<Book> book=bookService.selectAll();
+        System.out.println("bookService.selectAll()===>>>"+book);
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
 

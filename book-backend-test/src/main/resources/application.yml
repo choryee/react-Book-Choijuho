@@ -5,16 +5,39 @@ server:
       enabled: true
 
 spring:
-  datasource:
-    url: jdbc:h2:mem:booktestdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+  # h2 db는 스프링 새로 구동할때마다, 데이타 사라져, mysql로 바꿈. 밑처럼.
+ # datasource:
+ #  url: jdbc:h2:mem:booktestdb
+ #   driver-class-name: org.h2.Driver
+ #    username: sa
+ #  password:
 
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bookdb?serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
+
+    #  jpa:
+    #   open-in-view: true
+      # hibernate:
+      #    ddl-auto: create
+      #   naming:
+    #      physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  #   show-sql: true
+
+# 댓글기능도 추가하기 위해, 최주호 '나만의 블로그 만들기' 18강들으면서, 추가한것.
   jpa:
     open-in-view: true
     hibernate:
       ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      use-new-id-generator-mappings: false
     show-sql: true
+    properties:
+      hibernate.format_sql: true
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false

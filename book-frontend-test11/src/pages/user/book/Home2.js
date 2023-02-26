@@ -22,7 +22,7 @@ const Home2=()=> {
 
     setInputs({
       ...inputs, // 기존의 input 객체를 복사한 뒤
-      [name] : value // name 키를 가진 값(그것은 name)을 value={name}의 value 로 설정
+      [name] : value // name 키(e.target.name의 name과 비슷)를 가진 값(그것은 name)을 value={name}의 value 로 설정
     });
   };
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, ListGroup } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -24,11 +24,20 @@ const Detail = (props) => {
         author:''
     });
 
+    // const [reply, setReply]=useState({
+    //    id:'', 
+    //    content:'', 
+    //    bookId:''
+    // })
+
     useEffect(() => {
         fetch('http://localhost:8080/book/' + id)
           .then((res) => res.json())
           .then((res) => {
+            console.log('reply===>>',res);
+
             setBook(res);
+           // setReply(res);
           });
       }, []); // useEffect()
 
@@ -75,8 +84,31 @@ const Detail = (props) => {
             {' '}
             <Button variant="success" onClick={ListBook}>리스트</Button>
             <hr/>
-            <h6> 저자 : {book.author} </h6>
             <h6> 책 제목 : {book.title}</h6>
+            <h6> 저자 : {book.author} </h6>
+            <hr/>
+
+            <div className='card'>              
+                <div className='card-body'><textarea className='form-control' rows="1"></textarea></div>
+                <div className='card-footer'><Button className='' variant='danger'>등록</Button></div>
+            </div>
+            <br/>
+
+            <div className='card'>
+              <div className='card-header'>댓글 리스트</div>
+              <ListGroup className='reply--box d-flex'>
+
+                  <ListGroup.Item className='reply--1 d-flex justify-content-between'>
+                    <div>{book.reply.content} </div>
+                    <div className='d-flex'>
+                      <div className='font-italic'>작성자Id : {book.reply.bookId} &nbsp;</div>
+                      <Button className='badge'>삭제</Button>
+                    </div>
+                  </ListGroup.Item>
+                
+              </ListGroup>
+            </div>
+
         </div>
     );
 };

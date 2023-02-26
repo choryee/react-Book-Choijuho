@@ -1,4 +1,10 @@
 230219
+230226 댓글기능도 추가하기 위해, 최주호 '나만의 블로그 만들기' 18강부터 들음.
+
+JPA의 좋은점.
+'블로그'강의 67강 댓글 목록뿌리기
+Book.java에 필드로 있는 Reply의 getter도 모두 들고 오므로, 댓글 뿌릴때 따로 Reply 테이블을 내가 select할 필요없다.
+(이게 mybatis였으며, reply.xml을 만들 필요 없다).
 
 
 ==환경==========
@@ -13,9 +19,12 @@ frontend는 book-frontend 또는 book-frontend-test11 로 해야
 리액트 한글 강의
 https://react.vlpt.us/basic/08-manage-input.html
 
-H2 db보기 (서버 구동후)
+H2 db보기 (서버 구동후) 최초
 http://localhost:8080/h2-console
 url: jdbc:h2:mem:booktestdb
+-------- h2 db는 스프링 재구동할때마다, 데이터 지워서, mysql에 새롤 만듬. 230226
+Heidisql에
+bookdb로 만들어짐.
 
 intellij 스프링부트 gradle 프로젝트 생성 방법
 https://imksh.com/98
