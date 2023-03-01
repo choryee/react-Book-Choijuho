@@ -9,6 +9,8 @@ import Detail from './pages/user/book/Detail';
 import Header from './components/Header';
 import SaveForm from './pages/user/book/SaveForm';
 import UpdateForm from './pages/user/book/UpdateForm';
+import BookTest from './pages/user/book/BookTest';
+import BookItem from './components/BookItem';
 //import BookItem from '../../../components/BookItem';
 
 const App = () => {
@@ -22,9 +24,17 @@ const App = () => {
         <div>
           
 
+       {/*<BookTest/>*/} 
+
          {/*<Home/>*/} 
+
+     
+
         <Header/>
         <Container>
+          
+        <BookItem/>
+
         <Routes>
         <Route path="/" exact={true}  element={<Home/>}/>
         <Route path="/book/:id" exact={true}  element={<Detail/>}/>
@@ -34,9 +44,9 @@ const App = () => {
         
         {/*
         <Route path="/loginForm" exact={true}  element={<LoginForm/>}/>
-        <Route path="/joinForm" exact={true}  element={<JoinForm/>}/>
-        
+        <Route path="/joinForm" exact={true}  element={<JoinForm/>}/>        
         */}
+
         </Routes>
       </Container>
           

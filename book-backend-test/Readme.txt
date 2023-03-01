@@ -13,7 +13,7 @@ gradle,
 H2,
 
 ---------------------------------------------------------------------
-backend는  book-backend-test
+backend는  book-backend-test (run 안되면, book-backend-test만 따로 열러서 run 해라)
 frontend는 book-frontend 또는 book-frontend-test11 로 해야
 ---------------------------------------------------------------------
 리액트 한글 강의
