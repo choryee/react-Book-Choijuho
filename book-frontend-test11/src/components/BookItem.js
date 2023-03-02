@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const BookItem = (props) => {
     const {id, author, title}=props.books
-    console.log('book.props===>', author);
+    console.log('book.props author===>', author);
 
    // {books.map((book)=> <h3 key={book.id}> author:{book.author}, title:{book.title} </h3>)}
 
