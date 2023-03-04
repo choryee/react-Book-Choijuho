@@ -6,10 +6,10 @@ server:
 
 spring:
   datasource:
-    url: jdbc:h2:mem:booktestdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:mysql://localhost:3306/bookdb?serverTimezone=Asia/Seoul
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234
 
   jpa:
     open-in-view: true
