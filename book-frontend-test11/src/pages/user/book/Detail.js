@@ -10,7 +10,7 @@ const Detail = (props) => {
     const navigate = useNavigate();
    // const {author, title}=props.books;
 
-    console.log('detail.js props===>', props);
+    console.log('detail.js props===>', props); //다른데서 Detail로 넘긴게 없으니, 빈 값이다.
     console.log("================");
 
     //const id=props.match.params.id;

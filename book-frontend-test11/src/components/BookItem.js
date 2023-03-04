@@ -3,8 +3,9 @@ import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const BookItem = (props) => {
-    const {id, author, title}=props.books
+    const {id, author, title}=props.books;
     console.log('book.props author===>', author);
+    console.log('book.props props===>', props); //순회되면서, 값 받아옴.
 
    // {books.map((book)=> <h3 key={book.id}> author:{book.author}, title:{book.title} </h3>)}
 
