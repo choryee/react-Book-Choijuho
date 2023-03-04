@@ -14,8 +14,8 @@ const BookItem = (props) => {
             <Card style={{ width: '18rem' }}>
            
                 <Card.Body>
-                    <Card.Title>author: {author}</Card.Title>
-                    <Card.Text>title: {title}           
+                    <Card.Title>title: {title} </Card.Title>
+                    <Card.Text> author: {author}          
                     </Card.Text>
                     <Link to={'/book/'+id} className="btn btn-primary">
                         /메인페이지/ 상세보기(BookItem.js)

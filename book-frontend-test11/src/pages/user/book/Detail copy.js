@@ -23,7 +23,6 @@ const Detail = (props) => {
         title:'',
         author:'',
         reply:{id:'', content:''}
-        
     });
 
     useEffect(() => {
@@ -89,24 +88,17 @@ const Detail = (props) => {
             <br/>
 
             <div className='card'>
-               <div  className='card-header'>댓글 리스트</div>
-            {Array.isArray(book)
-             ? book.map((book, index) => (
-              
-                  <ListGroup key={index} className='reply--box d-flex'>
+            {book.map((book, index) => ( )  ) }  
+              <div className='card-header'>댓글 리스트</div>
+                  <ListGroup className='reply--box d-flex'>
                       <ListGroup.Item className='reply--1 d-flex justify-content-between'>
                         <div>{book.reply.content} </div>
-
                         <div className='d-flex'>
                           <div className='font-italic'>작성자Id : {book.reply.id}  &nbsp;</div>
                           <Button className='badge'>삭제</Button>
                         </div>
                       </ListGroup.Item>                
                   </ListGroup>
-
-
-             )  ) : null }  
-              
             </div>
 
 
