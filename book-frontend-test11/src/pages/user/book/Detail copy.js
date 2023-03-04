@@ -22,7 +22,7 @@ const Detail = (props) => {
         id:'',
         title:'',
         author:'',
-        reply:{id:'', content:''}
+       
     });
 
     useEffect(() => {
@@ -88,13 +88,14 @@ const Detail = (props) => {
             <br/>
 
             <div className='card'>
-            {book.map((book, index) => ( )  ) }  
+           
               <div className='card-header'>댓글 리스트</div>
                   <ListGroup className='reply--box d-flex'>
                       <ListGroup.Item className='reply--1 d-flex justify-content-between'>
-                        <div>{book.reply.content} </div>
+                        <div>   </div>
+
                         <div className='d-flex'>
-                          <div className='font-italic'>작성자Id : {book.reply.id}  &nbsp;</div>
+                          <div className='font-italic'>작성자Id :  &nbsp;</div>
                           <Button className='badge'>삭제</Button>
                         </div>
                       </ListGroup.Item>                

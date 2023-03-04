@@ -5,7 +5,9 @@ import { useNavigate } from 'react-router-dom';
 const SaveForm = () => {
     const navigate = useNavigate();
 
-    const [book, setBook]=useState({title:'', author:''});
+    const [book, setBook]=useState({
+        title:'', author:''
+    });
 
     const changeValue=(e)=>{
         //changeValue클릭할때 마다 발생하는 모든 이벤트를 e가 가지고 있다.
