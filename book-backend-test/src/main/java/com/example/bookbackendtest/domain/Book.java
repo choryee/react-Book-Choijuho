@@ -1,5 +1,6 @@
 package com.example.bookbackendtest.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,15 +18,17 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private String author;
     private String title;
 
     //   @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
     @OneToMany(mappedBy = "book", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JsonIgnoreProperties({"book"})
+   @JsonIgnoreProperties({"book"})
+    @OrderBy("id desc ")
     private List<Reply> reply;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     @CreationTimestamp
     private Timestamp createDate;
 }

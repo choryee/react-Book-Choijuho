@@ -1,0 +1,689 @@
+import axios from 'axios';
+import { async } from 'q';
+import React, { useEffect, useState } from 'react';
+import { Button, ListGroup } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+//31강.09'00
+
+const Detail = (props) => {
+    const navigate = useNavigate();
+   // const {author, title}=props.books;
+
+   // console.log('detail.js props===>', props); //다른데서 Detail로 넘긴게 없으니, 빈 값이다.
+    console.log("=Detail js 호출됨---------");
+
+    //const id=props.match.params.id;
+    //const id = props.match.params.id;
+    const {id} = useParams();
+    // const id=props.match.params.id;
+
+    const[book,setBook]=useState({
+        id:'',
+        title:'',
+        author:'',
+               
+    });
+
+   const [commentArray, setComentArray] = useState([]);
+
+   const feed = ({ commentArray });
+   console.log('feed.book==>', feed.book);
+   console.log('feed.commentArray==>', feed.commentArray);
+
+
+    useEffect(() => {
+        fetch('http://localhost:8080/book/' + id)
+          .then((res) => res.json())
+          .then((res) => {
+            console.log('Detail res.reply.content==>>', res.reply[0].content)
+
+            setComentArray(res.reply);
+            setBook(res);
+          });
+      }, []); // useEffect()
+
+      
+ 
+        // useEffect(() => {
+
+        //   const fetchUsers = async () => {
+        //     try {
+        //       // 요청이 시작 할 때에는 error 와 users 를 초기화하고
+        //     //  setError(null);
+        //     //  setUsers(null);
+        //       // loading 상태를 true 로 바꿉니다.
+        //    //   setLoading(true);
+        //       const response = await axios.get(
+        //         'http://localhost:8080/book/' + id
+        //       );
+        //       setBook(response.data); // 데이터는 response.data 안에 들어있습니다.
+        //       console.log('response.data==>>', response.data)
+        //     } catch (e) {
+        //       //setError(e);
+        //       console.log('에러==>>',e)
+        //     }
+        //    // setLoading(false);
+        //   };
+      
+        //   fetchUsers();
+        // }, []);
+
+
+      const deleteBook=()=>{
+        fetch('http://localhost:8080/book/'+id,{
+            method:'DELETE',
+        })
+        // res.json()이 아니라, res.text()
+        .then((res)=>res.text())
+        .then((res)=>{
+            console.log('delete id===>', id)
+            console.log('delete res==>', res)
+
+            if(res==='ok'){
+                //props.history.push('/');
+                alert("삭제를 했습니다.");
+                navigate('/');
+                
+            }else{
+                alert("삭제 실패했습니다.");
+            }
+        });
+      };
+
+
+      const updateBook=()=>{
+        //32강. 10'00 밑에것 작동 안 함.
+        navigate('/updateForm/'+id);
+      }
+
+      const ListBook=()=>{
+        navigate('/');
+      }
+
+// {books.map((book)=> (<BookItem key={book.id} books={book}/>))}
+// map쓰기 위해서는, const [commentArray, setComentArray] = useState([]);에 useState([]) 빈 배열.
+// 위 처럼, 객체 안에 또 다른 배열되는 것은 따로 useState 만들어야.
+// <ListGroup key={index} 에 key값 있어야.
+//https://velog.io/@moolbum/React-%EC%9D%B8%EC%8A%A4%ED%83%80%EA%B7%B8%EB%9E%A8-%EB%8C%93%EA%B8%80
+// https://ddeck.tistory.com/29
+// https://react.vlpt.us/integrate-api/01-basic.html
+// https://bum-developer.tistory.com/entry/React-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%9E%91%EC%97%85%EC%BD%9C%EB%B0%B1-%ED%95%A8%EC%88%98-Promise-async-await
+// https://velog.io/@hongduhyeon/React-useState%EC%99%80-%EA%B0%9D%EC%B2%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%B4%EC%84%9C-map-%ED%95%A8%EC%88%98-%EC%9E%91%EC%84%B1
+// https://codingbroker.tistory.com/123
+
+
+    return (
+        <div>
+            <h1>책 상세보기(Detail.js)</h1>
+
+            <Button variant="warning" onClick={updateBook}>수정</Button>
+            {' '}
+            <Button variant="danger" onClick={deleteBook}>삭제</Button>
+            {' '}
+            <Button variant="success" onClick={ListBook}>리스트</Button>
+            <hr/>
+            <h6> 책 제목 : {book.title} </h6>
+            <h6> 저자 : {book.author}  </h6>
+            
+            <hr/>
+
+            <div className='card'>
+                          
+                <div className='card-body'><textarea className='form-control' rows="1"></textarea></div>
+                <div className='card-footer'><Button className='' variant='danger'>등록</Button></div>
+            </div>
+            <br/>
+
+            <div className='card'>
+               <div  className='card-header'>댓글 리스트</div>               
+            
+               {commentArray.map((book1, index) => (              
+            
+                  <ListGroup key={index} className='reply--box d-flex'>
+                      <ListGroup.Item className='reply--1 d-flex justify-content-between'>
+                        <div > {book1.content} </div>
+
+                        <div className='d-flex'>
+                          <div className='font-italic'>작성자Id : {book1.id} &nbsp;</div>
+                          <Button className='badge'>삭제</Button>
+                        </div>
+                      </ListGroup.Item>                
+                  </ListGroup>
+               
+              ) )}             
+              
+            </div>
+        </div>
+    );
+};
+
+export default Detail;
+-------------------
+import React, { useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+
+const SaveForm = () => {
+    const navigate = useNavigate();
+
+    const [book, setBook]=useState({title:'', author:''});
+
+    const changeValue=(e)=>{
+        //changeValue클릭할때 마다 발생하는 모든 이벤트를 e가 가지고 있다.
+        setBook({
+            ...book,
+            [e.target.name]:e.target.value //키:값 형태
+        })
+    }
+
+    //이 밑은 Book-frontend submitBook과 좀 다름. 에러나면 그것을 보라.
+    const submitBook=(e)=>{
+        e.preventDefault();
+        fetch("http://localhost:8080/book",{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json; charset=utf-8',
+            },
+            body:JSON.stringify(book)       
+        })
+        //이 밑은 Book-frontend submitBook과 좀 다름. 에러나면 그것을 보라.
+        .then(res=>{  
+            if(res.status===200){
+                alert('책 등록 성공!!')
+                navigate('/')
+                
+            }else{
+                alert('책 등록 실패!!')
+            }
+        })
+
+        .then(
+        )
+
+    }
+
+
+
+    // const [text, setText]=useState('');
+
+    // const changeText=(e)=>{
+    //     let textAuthor=e.target.value;
+    //     let textName=e.target.name;
+    //     console.log('textAuthor.value===>', textAuthor);
+    //     console.log('e.target===>', e);
+    //     setText([...text, textAuthor]);
+    //     // const {name, value}=e.target.value;
+    //     // console.log('name===>>', name);
+
+    // }
+
+    // const sendText=(e)=>{
+    //     e.preventDefault();
+
+    // }
+
+    // <Form.Control는 bootstrap에서 input를 개량해서 만든 input일종.
+
+    return (
+        <div>
+            <Form onSubmit={submitBook}>
+
+                 <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Title</Form.Label>
+                    <Form.Control type="text" name="title" onChange={changeValue} placeholder="Enter Title" />
+                </Form.Group>
+
+
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Author</Form.Label>
+                    <Form.Control type="text" name="author"  onChange={changeValue} placeholder="Enter Author" />
+                    <Form.Text className="text-muted">
+                    
+                    </Form.Text>
+                </Form.Group>
+      
+                <Button variant="secondary" type="submit" >
+                    Submit
+                </Button>
+            </Form>
+        </div>
+    );
+};
+
+export default SaveForm;
+-------------
+import React, { useEffect, useState} from 'react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import { useNavigate, useParams } from 'react-router-dom';
+
+
+
+//30강.첨
+const UpdateForm = (props) => {
+
+    const navigate = useNavigate();
+
+    const {id}=useParams();
+
+//폼안에 글자를 적은 것이 서버로 가야하므로, 그것을 상태(첨에서 빈 상태에서 글자 입력 상태)로 관리해야
+    const[book,setBook]=useState({
+        title:"",
+        author:"",
+    });
+
+    useEffect(() => {
+        fetch('http://localhost:8080/book/' + id)
+          .then((res) => res.json())
+          .then((res) => {
+            setBook(res);
+          });
+      }, []); // useEffect()
+
+
+    const changeValue=(e)=>{
+        //changeValue클릭할때 마다 발생하는 모든 이벤트를 e가 가지고 있다.
+        setBook({
+            ...book,
+            [e.target.name]:e.target.value //키:값 형태
+        })
+    }
+
+    const submitBook=(e)=>{
+     //버튼이 폼안에 있을때는 버튼클릭하면, submit되므로 그것을 막기위해.밑 
+        e.preventDefault();
+        fetch('http://localhost:8080/book/'+id, {
+            method:'put',
+            headers:{
+                'Content-Type':'application/json; charset=utf-8',
+            },
+            body:JSON.stringify(book),
+        })
+          .then((res)=>{
+            console.log('SaveForm.js res===>>>',res);
+            
+            if(res.status===200){
+                alert('책 수정 성공!!')
+                return res.json();
+            }else{
+                return null;
+            }
+          })
+          .then((res)=>{ // 바로 위 return res.json();를 받은 .then((res) res임.
+            if(res!==null){
+                console.log('SaveForm.js props==>>',props);
+              //밑에 안 됨. 30강.뒤
+              navigate('/book/'+id);
+
+
+            }else {
+                alert("책 수정 실패했습니다!!!");
+            }
+          })
+          .catch((error)=>{ //바로 위 .then((res)=>{ 부분에서 에러 날때, 여기 catch 타는 것.
+            console.log('에러남 error===>', error)
+          })
+    };
+
+    return (
+
+        <div>
+        <Form onSubmit={submitBook}>
+
+             <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Title</Form.Label>
+                <Form.Control type="text" name="title" value={book.title} onChange={changeValue} placeholder="Enter Title" />
+            </Form.Group>
+
+
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Author</Form.Label>
+                <Form.Control type="text" name="author"  value={book.author} onChange={changeValue} placeholder="Enter Author" />
+                <Form.Text className="text-muted">
+                
+                </Form.Text>
+            </Form.Group>
+  
+            <Button variant="secondary" type="submit" >
+                Submit
+            </Button>
+        </Form>
+    </div>
+    );
+};
+
+export default UpdateForm;
+-----------------
+import React, { useEffect, useState } from 'react';
+import MainPage from './MainPage';
+import Home2 from './pages/user/book/Home2';
+import Home from './pages/user/book/Home';
+import HomePage from './pages/user/book/HomePage';
+import { Container } from 'react-bootstrap';
+import { Route, Routes } from 'react-router-dom';
+import Detail from './pages/user/book/Detail';
+import Header from './components/Header';
+import SaveForm from './pages/user/book/SaveForm';
+import UpdateForm from './pages/user/book/UpdateForm';
+import BookTest from './pages/user/book/BookTest';
+import BookItem from './components/BookItem';
+//import BookItem from '../../../components/BookItem';
+
+const App = () => {
+
+
+//  {books.map((book)=><h1>author:{book.author}, title: {book.title}</h1> )}
+// {books.map(book=><h1>author:{book.author}, title: {book.title}</h1> )} book에 ()없어도 됨.
+//console.log('author==>', )
+// {/* <HomePage/> */}
+    return (
+        <div>
+          
+
+       {/*<BookTest/>*/} 
+
+         {/*<Home/>*/} 
+
+     
+
+        <Header/>
+        <Container>
+          
+        <BookItem/>
+
+        <Routes>
+        <Route path="/" exact={true}  element={<Home/>}/>
+        <Route path="/book/:id" exact={true}  element={<Detail/>}/>
+        <Route path="/updateForm/:id" exact={true} element={<UpdateForm/>}/>
+        <Route path="/saveForm" exact={true} element={<SaveForm/>}/>
+        
+        
+        {/*
+        <Route path="/loginForm" exact={true}  element={<LoginForm/>}/>
+        <Route path="/joinForm" exact={true}  element={<JoinForm/>}/>        
+        */}
+
+        </Routes>
+      </Container>
+          
+        
+          
+        </div>
+    );
+};
+
+export default App;
+-----------------
+package com.example.bookbackendtest.domain;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Board {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private String title;
+
+    @Lob
+    private String content;
+
+    @ColumnDefault("0")
+    private int count;
+
+   // private int userId; //이런식으로 해서, 이것을 FK로 하는게 전통적.
+    @JoinColumn(name = "userId") // 왼쪽은 나(Board)보다 위에 있는 것 의미. 즉, userId를 FK로 만드는 것.
+    // 나(Board)와 @JoinColumn의 "userId"가 비교됨. 나가 Join되어지므로, 나가 하인됨. userId가 주인임.
+    // @JoinColumn 붙이면, FK만들고, 그 FK에 해당하는 것이 나(Board)의 (연관관계의) '주인'이다 의미됨.
+    @ManyToOne //Many-Board, One-User임.
+    private User user; // 스프링에서 왼쪽처럼 객체로 넣으면, DB는 인식못하므로, 위에 "userId"를 걸어주면, 객체를 컬럼(FK로 인식하면서)으로 만들어줌. 20강.
+
+ //   @JoinColumn(name = "replyId") 블로그 22강.
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER) //여기에 Reply는 Board를 select할때, 그냥 같이 select해야할 것이지, FK를 여기에 만들지 마세요
+    private List<Reply> reply;
+
+    @CreationTimestamp
+    private Timestamp createDate;
+}
+
+----------
+package com.example.bookbackendtest.domain;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@ToString(exclude = "reply")
+public class Book {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String author;
+    private String title;
+
+ //   @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties({"book"})
+    private List<Reply> reply;
+
+    @CreationTimestamp
+    private Timestamp createDate;
+}
+
+------------
+package com.example.bookbackendtest.domain;
+
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Time;
+import java.sql.Timestamp;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+public class Reply {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "boardId")
+    private Board board;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "bookId")
+    private Book book;
+
+    @CreationTimestamp
+    private Timestamp createDate;
+
+}
+
+--------------
+package com.example.bookbackendtest.domain;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private String username;
+
+    private String password;
+
+    private String email;
+
+    @ColumnDefault(" 'user' ")
+    private String role;
+
+    @CreationTimestamp //시간이 자동으로 입력됨. 비워둬도.
+    private Timestamp createDate;
+
+}
+
+------------
+package com.example.bookbackendtest.repository;
+
+import com.example.bookbackendtest.domain.Reply;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ReplyRespository extends JpaRepository<Reply, Integer> {
+}
+----------
+package com.example.bookbackendtest.web;
+
+
+import com.example.bookbackendtest.domain.Book;
+import com.example.bookbackendtest.service.BookService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.Path;
+import java.util.List;
+
+@RequiredArgsConstructor
+@RestController
+public class BookController {
+
+    private final BookService bookService;
+
+    @CrossOrigin
+    @GetMapping("/book")
+    public ResponseEntity<?> findAll22(){
+        List<Book> book=bookService.selectAll();
+        System.out.println("bookService.selectAll()===>>>"+book);
+        return new ResponseEntity<>(book, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @PostMapping("/book")
+    public ResponseEntity<?> save22(@RequestBody Book book){
+        System.out.println("book.getAuthor()===>>"+book.getAuthor());
+
+        return new ResponseEntity<>(bookService.save(book), HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @GetMapping("/book/{id}")
+    public ResponseEntity<?> selectOne22(@PathVariable Long id){
+      //  Book book22=bookService.selectOne(id);
+        System.out.println("bookService.selectOne(id)===>>>"+bookService.selectOne(id) );
+        return new ResponseEntity<>(bookService.selectOne(id), HttpStatus.OK);
+    }
+
+//    @CrossOrigin
+//    @GetMapping("/book/{id}")
+//    public ResponseEntity<?> findById(@PathVariable Long id){
+//        System.out.println("Id: "+id);
+//        return new ResponseEntity<>(bookService.한건가져오기(id), HttpStatus.OK);
+//    }
+
+
+    @CrossOrigin
+    @PutMapping("/book/{id}")
+    public ResponseEntity<?> update22(@PathVariable Long id, @RequestBody Book book){
+
+        return new ResponseEntity<>(bookService.update(id, book), HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @DeleteMapping("/book/{id}")
+    public ResponseEntity<?> delete22(@PathVariable Long id){
+        return new ResponseEntity<>(bookService.delete(id), HttpStatus.OK );
+    }
+
+}
+------------
+{Array.isArray(book)
+             ? book.map((book, index) => (
+              
+                  <ListGroup key={index} className='reply--box d-flex'>
+                      <ListGroup.Item className='reply--1 d-flex justify-content-between'>
+                        <div>{book.reply.content} </div>
+
+                        <div className='d-flex'>
+                          <div className='font-italic'>작성자Id : {book.reply.id}  &nbsp;</div>
+                          <Button className='badge'>삭제</Button>
+                        </div>
+                      </ListGroup.Item>                
+                  </ListGroup>
+
+
+             )  ) : null }  
+--------------
+ useEffect(async() => {
+    try{
+    // 데이터를 받아오는 동안 시간이 소요됨으로 await 로 대기
+      const res = await axios.get('/api/test')
+      // 받아온 데이터로 다음 작업을 진행하기 위해 await 로 대기
+      // 받아온 데이터를 map 해주어 rowData 별로 _inputData 선언
+      const _inputData = await res.data.map((rowData) => ({
+              idx: rowData.idx,
+              title: rowData.title,
+              content: rowData.content,
+              writer: rowData.writer,
+              write_date: rowData.write_date
+            })
+      )
+      // 선언된 _inputData 를 최초 선언한 inputData 에 concat 으로 추가
+      setInputData(inputData.concat(_inputData))
+    } catch(e){
+      console.error(e.message)
+    }
+  },[])

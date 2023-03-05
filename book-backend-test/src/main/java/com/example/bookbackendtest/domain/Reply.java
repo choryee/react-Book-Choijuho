@@ -1,6 +1,7 @@
 package com.example.bookbackendtest.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -27,12 +28,13 @@ public class Reply {
 
     @ManyToOne
     @JoinColumn(name = "userId")
-    private User user;
+    private User user1;
 
     @ManyToOne
     @JoinColumn(name = "bookId")
     private Book book;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     @CreationTimestamp
     private Timestamp createDate;
 

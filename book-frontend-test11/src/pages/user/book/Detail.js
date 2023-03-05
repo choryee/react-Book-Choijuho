@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { async } from 'q';
 import React, { useEffect, useState } from 'react';
-import { Button, ListGroup } from 'react-bootstrap';
+import { Button, Form, ListGroup } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -30,7 +30,7 @@ const Detail = (props) => {
    const [commentArray, setComentArray] = useState([]);
 
    const feed = ({ commentArray });
-   console.log('feed.book==>', feed.book);
+  // console.log('feed.book==>', feed.book);
    console.log('feed.commentArray==>', feed.commentArray);
 
 
@@ -38,7 +38,7 @@ const Detail = (props) => {
         fetch('http://localhost:8080/book/' + id)
           .then((res) => res.json())
           .then((res) => {
-            console.log('Detail res.reply.content==>>', res.reply[0].content)
+          //  console.log('Detail res.reply[0].content==>>', res.reply[0].content)
 
             setComentArray(res.reply);
             setBook(res);
@@ -70,6 +70,79 @@ const Detail = (props) => {
       
         //   fetchUsers();
         // }, []);
+
+        const[text,setText]=useState('');
+        const changeText=(e)=>{
+          setText(e.target.value);
+        }
+
+
+
+       const replySave=(e)=>{ //댓글 등록은 bookId도 저장되야 하므로, 추가 코드가 있다. ReplyService.java확인
+        //
+          e.preventDefault();
+
+         // const bookId1=id;
+         console.log('id===>', id);
+
+          const replyContent=({
+              content: text,
+              bookId : id
+          });         
+
+          console.log('replyContent==> ', replyContent);
+
+          fetch('http://localhost:8080/book/'+id+'/reply',{
+              method:'post',
+              headers:{
+                'Content-Type':'application/json; charset=utf-8',
+            },
+              body:JSON.stringify(replyContent)  
+          })          
+          .then(res=>{
+            
+
+            if(res.status===200) {
+              console.log('res===>>', res);
+              alert('댓글등록성공!!!');
+              navigate('/book/'+id);
+            }else{
+              alert('댓글 실패했습니돵!!!');
+              navigate('/book/'+id);
+            }
+          })
+          .then()
+        }; //-- replySave
+
+
+        
+        const deleteReply=(id, replyid)=>{
+          const {deleteBookId}=id;
+          // e.preventDefault();
+         // const replyId1=e.target.className.value;
+          console.log('deleteBookId===>', deleteBookId); //받아옴.객체로
+
+          fetch('http://localhost:8080/book/'+deleteBookId+'/delete/'+replyid,{
+            method:'DELETE',
+        })
+          // res.json()이 아니라, res.text()
+          .then((res)=>res.text())
+          .then((res)=>{
+              console.log('delete id===>', id)
+              console.log('delete res==>', res)
+
+              if(res==='ok'){
+                  //props.history.push('/');
+               //   alert("댓글 삭제를 했습니다.");
+                  navigate('/');
+                  
+              }else{
+                 // alert("댓글 삭제 실패했습니다.");
+              }
+          }
+          );
+          };
+
 
 
       const deleteBook=()=>{
@@ -131,11 +204,15 @@ const Detail = (props) => {
             <hr/>
 
             <div className='card'>
-                          
-                <div className='card-body'><textarea className='form-control' rows="1"></textarea></div>
-                <div className='card-footer'><Button className='' variant='danger'>등록</Button></div>
+               <Form>   
+                <input type={'hidden'} id="bookId" value={commentArray.bookId}></input>       
+                <div className='card-body'><textarea id="reply-content" value={text} onChange={changeText} className='form-control' rows="1"></textarea></div>
+                 <p>{text} </p>
+                <div className='card-footer'><Button id="btn-reply-save" onClick={replySave} className='' variant='danger'>댓글등록</Button></div>
+                </Form> 
             </div>
             <br/>
+
 
             <div className='card'>
                <div  className='card-header'>댓글 리스트</div>               
@@ -143,12 +220,18 @@ const Detail = (props) => {
                {commentArray.map((book1, index) => (              
             
                   <ListGroup key={index} className='reply--box d-flex'>
-                      <ListGroup.Item className='reply--1 d-flex justify-content-between'>
+                      <ListGroup.Item  value={book1.id} className='reply--1 d-flex justify-content-between'>
                         <div > {book1.content} </div>
 
                         <div className='d-flex'>
-                          <div className='font-italic'>작성자Id : {book1.id} &nbsp;</div>
-                          <Button className='badge'>삭제</Button>
+                        <div className='font-italic replyId'  >BookId :{id}, &nbsp;</div>
+                          <div className='font-italic replyId'  >작성자Id : {book1.id}, &nbsp;</div>
+                          <div className='font-italic'>작성일 : {book1.createDate} &nbsp;</div>
+                          {/* 
+                          <Button className='badge' >삭제</Button>
+                          */}
+                          <Button className='badge' onClick={deleteReply({id}, book1.id)}>삭제</Button>
+                          
                         </div>
                       </ListGroup.Item>                
                   </ListGroup>

@@ -27,7 +27,7 @@ const SaveForm = () => {
             },
             body:JSON.stringify(book)       
         })
-        .then(res=>{  //이 밑은 Book-frontend submitBook과 좀 다름. 에러나면 그것을 보라.
+        .then(res=>{  //이 밑은 Book-frontend의 submitBook과 좀 다름. 에러나면 그것을 보라.
             if(res.status===200){
                 alert('책 등록 성공!!')
                 navigate('/')
